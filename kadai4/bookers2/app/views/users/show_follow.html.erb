@@ -1,0 +1,45 @@
+<div class="container">
+	<div class="row">
+		<h1>Follows</h1>
+		<% @user.followings.each do |user| %>
+			<table class="table">
+				<thead>
+					<tr>
+					<th>image</th>
+					<th>name</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>
+						<%= attachment_image_tag(user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg") %>
+					</td>
+					<td><%= user.name %></td>
+					<% user ||= current_user %>
+					<td>
+						<%= link_to 'フォロー数: ' ,following_user_path(user) %>
+						<%= user.followings.count %>
+					</td>
+					<td>
+						<%= link_to 'フォロワー数: ',followers_user_path(user) %>
+						<%= user.followers.count %>
+					</td>
+
+					<% unless current_user?(user) %>
+						<% if current_user.following?(user) %>
+							<td>
+								<%= render 'unfollow', user: user %>
+							</td>
+						<% else %>
+							<td>
+								<%= render 'follow', user: user %>
+							</td>
+						<% end %>
+					<% end %>
+					<td><%= link_to 'show', user_path(user) %></td>
+				</tr>
+				</tbody>
+			</table>
+		<% end %>
+	</div>
+</div>
