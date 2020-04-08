@@ -1,0 +1,54 @@
+<% if @range == '1' %>
+	<h3>Users search for '<%= @word %>'</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>image</th>
+				<th>name</th>
+				<th colspan="3"></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @user.each do |user| %>
+				<tr>
+					<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+					<td><%= user.name%></td>
+					<% user ||= current_user %>
+					<td>
+						<%= link_to 'フォロー数: ' ,following_user_path(user) %>
+						<%= user.followings.count %>
+					</td>
+					<td>
+						<%= link_to 'フォロワー数: ',followers_user_path(user) %>
+						<%= user.followers.count %>
+					</td>
+					<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% else @range == '2' %>
+	<h3>Books search for '<%= @word %>'</h3>
+<table class="table table-hover table-inverse">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Title</th>
+			<th>Opinion</th>
+			<th colspan="3"></th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @book.each do |book| %>
+			<tr>
+				<%= render 'books/book', book: book %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<% end %>
