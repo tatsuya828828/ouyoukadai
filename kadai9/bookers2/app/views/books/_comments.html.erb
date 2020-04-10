@@ -1,0 +1,10 @@
+<% @book.post_comments.each do |post_comment| %>
+	<div>
+		<%= attachment_image_tag(post_comment.user, :profile_image, :fill, 60, 60, fallback: "no-image-mini.jpg") %><br>
+		<%= post_comment.user.name %><br>
+		<%= post_comment.comment %>
+		<% if post_comment.user == current_user %>
+		<%= link_to "Destroy", destroy_comment_book_post_comments_path(@book,post_comment), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger" %>
+		<% end %>
+	</div><br>
+<% end %>

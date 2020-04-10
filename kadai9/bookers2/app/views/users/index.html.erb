@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-xs-3">
+		<%= render 'users/profile', user: current_user %>
+<!--メモ　右側の指定に注意。そこを間違えるとエラーが発生して表示されない -->
+
+		<%= render 'books/newform', book: @book %>
+	</div>
+
+
+	<div class="col-xs-9">
+		<h2>Users</h2>
+<!--users一覧 -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>image</th>
+					<th>name</th>
+					<th colspan="3"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @users.each do |user| %>
+				<tr>
+					<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+					<td><%= user.name%></td>
+					<% user ||= current_user %>
+					<td>
+						<%= link_to 'フォロー数: ' ,following_user_path(user) %>
+						<%= user.followings.count %>
+					</td>
+					<td>
+						<%= link_to 'フォロワー数: ',followers_user_path(user) %>
+						<%= user.followers.count %>
+					</td>
+					<% unless current_user?(user) %>
+						<% if current_user.following?(user) %>
+							<td>
+								<%= render 'unfollow',user: user %>
+							</td>
+						<% else %>
+							<td>
+								<%= render 'follow',user: user %>
+							</td>
+						<% end %>
+					<% end %>
+					<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>
+<!--users一覧 -->
+
